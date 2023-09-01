@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Security.Claims;
 using TryBets.Odds.Repository;
+using TryBets.Odds.Models;
 
 namespace TryBets.Odds.Controllers;
 
@@ -20,6 +21,11 @@ public class OddController : Controller
 
     public IActionResult Patch(int MatchId, int TeamId, string BetValue)
     {
-        throw new NotImplementedException();
+        try {
+            Match changedMatch = _repository.Patch(MatchId, TeamId, BetValue);
+            return Ok(changedMatch);
+        } catch (Exception err) {
+            return BadRequest(new { message = err.Message });
+        }
     }
 }
